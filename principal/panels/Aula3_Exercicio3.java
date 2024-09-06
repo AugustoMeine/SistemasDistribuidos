@@ -20,6 +20,7 @@ public class Aula3_Exercicio3 extends JPanel{
 	
 	public static Socket cliente;
 	public static ServerSocket servidor;
+	public static float saldo = 0;
 	
 	public Aula3_Exercicio3(int telaLargura, int telaAltura) {
 		setBounds(0,0,telaLargura,telaAltura);
@@ -59,25 +60,19 @@ public class Aula3_Exercicio3 extends JPanel{
                                     String dados[] = mensagemCliente.split(";");                                        
                                     float resultado = 0;
                                     
-                                    if(dados[0].equalsIgnoreCase("somar")) {
-                                    	resultado = Float.parseFloat(dados[1]) + Float.parseFloat(dados[2]); 
+                                    if(dados[0].equalsIgnoreCase("sacar")) {
+                                    	Aula3_Exercicio3.saldo = Aula3_Exercicio3.saldo - Float.parseFloat(dados[1]); 
                                     }
                                     
-                                    if(dados[0].equalsIgnoreCase("subtrair")) {
-                                    	resultado = Float.parseFloat(dados[1]) - Float.parseFloat(dados[2]); 
+                                    if(dados[0].equalsIgnoreCase("depositar")) {
+                                    	Aula3_Exercicio3.saldo = Aula3_Exercicio3.saldo + Float.parseFloat(dados[1]); 
                                     }
                                     
-                                    if(dados[0].equalsIgnoreCase("multiplicar")) {
-                                    	resultado = Float.parseFloat(dados[1]) * Float.parseFloat(dados[2]); 
-                                    }
-                                    
-                                    if(dados[0].equalsIgnoreCase("dividir")) {
-                                    	resultado = Float.parseFloat(dados[1]) / Float.parseFloat(dados[2]); 
-                                    }
-                                    
-                                    //envio                                        
-                                    DataOutputStream dataOutputStreamServidor = new DataOutputStream(clienteConectado.getOutputStream());
-                                    dataOutputStreamServidor.writeUTF(""+resultado);//envia uma mensagem ao cliente   
+                                    if(dados[0].equalsIgnoreCase("consultarSaldo")) {
+                                    	//envio                                        
+                                        DataOutputStream dataOutputStreamServidor = new DataOutputStream(clienteConectado.getOutputStream());
+                                        dataOutputStreamServidor.writeUTF("Saldo atual:"+Aula3_Exercicio3.saldo);//envia uma mensagem ao cliente  
+                                    }                                                                                                          
                                 }                                                                                  
                             }catch(IOException eIO){
                             	System.out.println("Servidor: Erro ao receber/enviar mensagem: " + eIO.getMessage());
@@ -120,7 +115,7 @@ public class Aula3_Exercicio3 extends JPanel{
                         public void run(){
                             try{
                                 while(true){                                                                                                
-                                    String resposta = dataInputStreamCliente.readUTF();
+                                    String resposta = dataInputStreamCliente.readUTF();                                    
                                     System.out.println("Cliente:Mensagem recebida do Servidor: "+resposta);                                                                                    
                                 }                                                        
                             }catch(IOException eIO){
@@ -138,100 +133,70 @@ public class Aula3_Exercicio3 extends JPanel{
         });
 		add(buttonIniciarCliente);
 		
-		JLabel primeiroNumero = new JLabel();
-		primeiroNumero.setText("Primeiro Numero: ");
-		primeiroNumero.setBounds((telaLargura/4)*2,(telaAltura/8)*1,(telaLargura/8)*2,telaAltura/8);
-		primeiroNumero.setFont(new Font("Arial",Font.PLAIN,30));
-		primeiroNumero.setForeground(Color.WHITE); 
-		add(primeiroNumero);
+		JLabel labelValor = new JLabel();
+		labelValor.setText("Valor: R$");
+		labelValor.setBounds((telaLargura/4)*2,(telaAltura/8)*1,(telaLargura/8)*2,telaAltura/8);
+		labelValor.setFont(new Font("Arial",Font.PLAIN,30));
+		labelValor.setForeground(Color.WHITE); 
+		add(labelValor);
 		
-		JTextField textFieldPrimeiroNumero = new JTextField();
-		textFieldPrimeiroNumero.setText("");
-		textFieldPrimeiroNumero.setBounds((telaLargura/4)*3,(telaAltura/8)*1,(telaLargura/8)*2,telaAltura/8);
-		textFieldPrimeiroNumero.setFont(new Font("Arial",Font.PLAIN,20));
-		add(textFieldPrimeiroNumero);
+		JTextField textFieldValor = new JTextField();
+		textFieldValor.setText("");
+		textFieldValor.setBounds((telaLargura/4)*3,(telaAltura/8)*1,(telaLargura/8)*2,telaAltura/8);
+		textFieldValor.setFont(new Font("Arial",Font.PLAIN,20));
+		add(textFieldValor);
 		
-		JLabel segundoNumero = new JLabel();
-		segundoNumero.setText("Segundo Numero: ");
-		segundoNumero.setBounds((telaLargura/4)*2,(telaAltura/8)*2,(telaLargura/8)*2,telaAltura/8);
-		segundoNumero.setFont(new Font("Arial",Font.PLAIN,30));
-		segundoNumero.setForeground(Color.WHITE); 
-		add(segundoNumero);
-		
-		JTextField textFieldSegundoNumero = new JTextField();
-		textFieldSegundoNumero.setText("");
-		textFieldSegundoNumero.setBounds((telaLargura/4)*3,(telaAltura/8)*2,(telaLargura/8)*2,telaAltura/8);
-		textFieldSegundoNumero.setFont(new Font("Arial",Font.PLAIN,20));
-		add(textFieldSegundoNumero);
-		
-		JButton buttonSomar = new JButton();
-		buttonSomar = new JButton();
-		buttonSomar.setBounds((telaLargura/4)*2, (telaAltura/8)*4, telaLargura/4,telaAltura/8);
-		buttonSomar.setText("+");
-		buttonSomar.setFont(new Font("Arial",Font.PLAIN,20));
-		buttonSomar.addActionListener(new ActionListener() {                   
+		JButton buttonSaque = new JButton();
+		buttonSaque = new JButton();
+		buttonSaque.setBounds((telaLargura/4)*2, (telaAltura/8)*4, telaLargura/2,telaAltura/8);
+		buttonSaque.setText("sacar");
+		buttonSaque.setFont(new Font("Arial",Font.PLAIN,20));
+		buttonSaque.addActionListener(new ActionListener() {                   
             public void actionPerformed(ActionEvent e) { 
             	try{
             		
                     DataOutputStream dataOutputStreamCliente = new DataOutputStream(Aula3_Exercicio3.cliente.getOutputStream());
-                    dataOutputStreamCliente.writeUTF("somar;"+textFieldPrimeiroNumero.getText()+";"+textFieldSegundoNumero.getText()); 
+                    dataOutputStreamCliente.writeUTF("sacar;"+textFieldValor.getText()); 
                 }catch(IOException eIO){
                     System.out.println("Cliente: Erro ao enviar mensagem: " + eIO.getMessage());
                 }
             } 
         });
-		add(buttonSomar);
+		add(buttonSaque);
 		
-		JButton buttonSubtrair = new JButton();
-		buttonSubtrair = new JButton();
-		buttonSubtrair.setBounds((telaLargura/4)*3, (telaAltura/8)*4, telaLargura/4,telaAltura/8);
-		buttonSubtrair.setText("-");
-		buttonSubtrair.setFont(new Font("Arial",Font.PLAIN,20));
-		buttonSubtrair.addActionListener(new ActionListener() {                   
+		JButton buttonDeposito = new JButton();
+		buttonDeposito = new JButton();
+		buttonDeposito.setBounds((telaLargura/4)*2, (telaAltura/8)*5, telaLargura/2,telaAltura/8);
+		buttonDeposito.setText("depositar");
+		buttonDeposito.setFont(new Font("Arial",Font.PLAIN,20));
+		buttonDeposito.addActionListener(new ActionListener() {                   
             public void actionPerformed(ActionEvent e) { 
             	try{
                     DataOutputStream dos = new DataOutputStream(Aula3_Exercicio3.cliente.getOutputStream());
-                    dos.writeUTF("subtrair;"+textFieldPrimeiroNumero.getText()+";"+textFieldSegundoNumero.getText());                    
+                    dos.writeUTF("depositar;"+textFieldValor.getText());                    
                 }catch(IOException eIO){
                     System.out.println("Cliente: Erro ao enviar mensagem: " + eIO.getMessage());
                 }
             } 
         });
-		add(buttonSubtrair);
+		add(buttonDeposito);
 		
-		JButton buttonMultiplicar = new JButton();
-		buttonMultiplicar = new JButton();
-		buttonMultiplicar.setBounds((telaLargura/4)*2, (telaAltura/8)*5, telaLargura/4,telaAltura/8);
-		buttonMultiplicar.setText("*");
-		buttonMultiplicar.setFont(new Font("Arial",Font.PLAIN,20));
-		buttonMultiplicar.addActionListener(new ActionListener() {                   
+		JButton buttonConsultarSaldo = new JButton();
+		buttonConsultarSaldo = new JButton();
+		buttonConsultarSaldo.setBounds((telaLargura/4)*2, (telaAltura/8)*6, telaLargura/2,telaAltura/8);
+		buttonConsultarSaldo.setText("Consultar Saldo");
+		buttonConsultarSaldo.setFont(new Font("Arial",Font.PLAIN,20));
+		buttonConsultarSaldo.addActionListener(new ActionListener() {                   
             public void actionPerformed(ActionEvent e) { 
             	try{
                     DataOutputStream dos = new DataOutputStream(Aula3_Exercicio3.cliente.getOutputStream());
-                    dos.writeUTF("multiplicar;"+textFieldPrimeiroNumero.getText()+";"+textFieldSegundoNumero.getText());                    
+                    dos.writeUTF("consultarSaldo;");                    
                 }catch(IOException eIO){
                     System.out.println("Cliente: Erro ao enviar mensagem: " + eIO.getMessage());
                 }
             } 
         });
-		add(buttonMultiplicar);
-		
-		JButton buttonDividir = new JButton();
-		buttonDividir = new JButton();
-		buttonDividir.setBounds((telaLargura/4)*3, (telaAltura/8)*5, telaLargura/4,telaAltura/8);
-		buttonDividir.setText("/");
-		buttonDividir.setFont(new Font("Arial",Font.PLAIN,20));
-		buttonDividir.addActionListener(new ActionListener() {                   
-            public void actionPerformed(ActionEvent e) { 
-            	try{
-                    DataOutputStream dos = new DataOutputStream(Aula3_Exercicio3.cliente.getOutputStream());
-                    dos.writeUTF("dividir;"+textFieldPrimeiroNumero.getText()+";"+textFieldSegundoNumero.getText());                    
-                }catch(IOException eIO){
-                    System.out.println("Cliente: Erro ao enviar mensagem: " + eIO.getMessage());
-                }
-            } 
-        });
-		add(buttonDividir);
+		add(buttonConsultarSaldo);	
 		
 	}	
 	

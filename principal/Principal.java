@@ -18,8 +18,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import principal.panels.Aula3_Exercicio2;
-import principal.panels.ClienteFrame;
-import principal.panels.ServidorFrame;
+import principal.panels.Aula3_Exercicio3;
 
 public class Principal{
 	
@@ -28,7 +27,6 @@ public class Principal{
 	private JButton botaoExercicio2;
 	private JButton botaoExercicio3;
 	private JButton botaoExercicio4;
-	private List<ServidorFrame> listaServidor = new ArrayList<ServidorFrame>();
 	JPanel panelGerenciador;
 	
 	public Principal() {
@@ -81,7 +79,7 @@ public class Principal{
         this.botaoExercicio2.setFont(new Font("Arial",Font.PLAIN,20));
         this.botaoExercicio2.addActionListener(new ActionListener() {                   
             public void actionPerformed(ActionEvent e) { 
-                //iniciarServidor();
+            	iniciarAula3Exercicio3();
             } 
         });
         panelPrincipal.add(this.botaoExercicio2); 
@@ -109,11 +107,13 @@ public class Principal{
         panelPrincipal.add(this.botaoExercicio4);
         
         
-        JPanel exercicio3Aula2 = new Aula3_Exercicio2(telaLargura, telaAltura);
+        JPanel aula3Exercicio2 = new Aula3_Exercicio2(telaLargura, telaAltura);
+        JPanel aula3Exercicio3 = new Aula3_Exercicio3(telaLargura, telaAltura);
         
         this.panelGerenciador = new JPanel(new CardLayout());
         this.panelGerenciador.add("principal",panelPrincipal);
-        this.panelGerenciador.add("aula3Exercicio2",exercicio3Aula2);
+        this.panelGerenciador.add("aula3Exercicio2",aula3Exercicio2);
+        this.panelGerenciador.add("aula3Exercicio3",aula3Exercicio3);
         
         this.principalFrame.add(panelGerenciador);
 	}
@@ -125,6 +125,11 @@ public class Principal{
 	public void iniciarAula3Exercicio2() {
 		CardLayout cardLayout = (CardLayout)(this.panelGerenciador.getLayout());
 	    cardLayout.show(this.panelGerenciador,"aula3Exercicio2");
+	}
+	
+	public void iniciarAula3Exercicio3() {
+		CardLayout cardLayout = (CardLayout)(this.panelGerenciador.getLayout());
+	    cardLayout.show(this.panelGerenciador,"aula3Exercicio3");
 	}
 	
 	public static void main(String[] args) {

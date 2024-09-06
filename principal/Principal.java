@@ -8,10 +8,6 @@ import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -19,6 +15,9 @@ import javax.swing.JPanel;
 
 import principal.panels.Aula3_Exercicio2;
 import principal.panels.Aula3_Exercicio3;
+import principal.panels.Aula4_Exercicio1;
+import principal.panels.Aula5_Exercicio2;
+import principal.panels.Aula6_Exercicios;
 
 public class Principal{
 	
@@ -27,6 +26,8 @@ public class Principal{
 	private JButton botaoExercicio2;
 	private JButton botaoExercicio3;
 	private JButton botaoExercicio4;
+	private JButton botaoExercicio5;
+
 	JPanel panelGerenciador;
 	
 	public Principal() {
@@ -34,7 +35,7 @@ public class Principal{
 		int telaLargura = 1080;
 		int telaAltura = 720;		
 		
-		int quantidadeDeExercicios = 4;
+		int quantidadeDeExercicios = 5;
 		
 		this.principalFrame = new JFrame();
 		this.principalFrame.setTitle("Augusto - Sistemas distribuidos");
@@ -90,7 +91,7 @@ public class Principal{
         this.botaoExercicio3.setFont(new Font("Arial",Font.PLAIN,20));
         this.botaoExercicio3.addActionListener(new ActionListener() {                   
             public void actionPerformed(ActionEvent e) { 
-                //iniciarServidor();
+                iniciarAula4Exercicio1();
             } 
         });
         panelPrincipal.add(this.botaoExercicio3);
@@ -101,19 +102,36 @@ public class Principal{
         this.botaoExercicio4.setFont(new Font("Arial",Font.PLAIN,20));
         this.botaoExercicio4.addActionListener(new ActionListener() {                   
             public void actionPerformed(ActionEvent e) { 
-                //iniciarServidor();
+            	iniciarAula5Exercicio2();
             } 
         });
         panelPrincipal.add(this.botaoExercicio4);
         
+        this.botaoExercicio5 = new JButton();
+        this.botaoExercicio5.setBounds(0, ((telaAltura/quantidadeDeExercicios) * 4), telaLargura, (telaAltura/quantidadeDeExercicios));
+        this.botaoExercicio5.setText("Aula 6 - Exercicios");
+        this.botaoExercicio5.setFont(new Font("Arial",Font.PLAIN,20));
+        this.botaoExercicio5.addActionListener(new ActionListener() {                   
+            public void actionPerformed(ActionEvent e) { 
+                iniciarAula6Exercicios();
+            } 
+        });
+        panelPrincipal.add(this.botaoExercicio5);
+        
         
         JPanel aula3Exercicio2 = new Aula3_Exercicio2(telaLargura, telaAltura);
         JPanel aula3Exercicio3 = new Aula3_Exercicio3(telaLargura, telaAltura);
+        JPanel aula4Exercicio1 = new Aula4_Exercicio1(telaLargura, telaAltura);
+        JPanel aula5Exercicio2 = new Aula5_Exercicio2(telaLargura, telaAltura);
+        JPanel aula6Exercicios = new Aula6_Exercicios(telaLargura, telaAltura);
         
         this.panelGerenciador = new JPanel(new CardLayout());
         this.panelGerenciador.add("principal",panelPrincipal);
         this.panelGerenciador.add("aula3Exercicio2",aula3Exercicio2);
         this.panelGerenciador.add("aula3Exercicio3",aula3Exercicio3);
+        this.panelGerenciador.add("aula4Exercicio1",aula4Exercicio1);
+        this.panelGerenciador.add("aula5Exercicio2",aula5Exercicio2);
+        this.panelGerenciador.add("aula6Exercicios",aula6Exercicios);
         
         this.principalFrame.add(panelGerenciador);
 	}
@@ -130,6 +148,21 @@ public class Principal{
 	public void iniciarAula3Exercicio3() {
 		CardLayout cardLayout = (CardLayout)(this.panelGerenciador.getLayout());
 	    cardLayout.show(this.panelGerenciador,"aula3Exercicio3");
+	}
+	
+	public void iniciarAula4Exercicio1() {
+		CardLayout cardLayout = (CardLayout)(this.panelGerenciador.getLayout());
+	    cardLayout.show(this.panelGerenciador,"aula4Exercicio1");
+	}
+	
+	public void iniciarAula5Exercicio2() {
+		CardLayout cardLayout = (CardLayout)(this.panelGerenciador.getLayout());
+	    cardLayout.show(this.panelGerenciador,"aula5Exercicio2");
+	}
+	
+	public void iniciarAula6Exercicios() {
+		CardLayout cardLayout = (CardLayout)(this.panelGerenciador.getLayout());
+	    cardLayout.show(this.panelGerenciador,"aula6Exercicios");
 	}
 	
 	public static void main(String[] args) {

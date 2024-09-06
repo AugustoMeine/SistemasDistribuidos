@@ -1,4 +1,4 @@
-package principal.frames;
+package principal.panels;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.KeyEventDispatcher;
